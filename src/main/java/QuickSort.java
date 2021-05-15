@@ -1,47 +1,44 @@
 import java.util.Random;
 
 public class QuickSort {
+
     public void sort(int[] a) {
         sort(a, 0, a.length - 1);
     }
 
-    private int partition(int start, int end, int[] arr)
-    {
-        int i = start, j = end;
-        int pivote = new Random().nextInt(j - i) + i;
-        int t = arr[j];
-        arr[j] = arr[pivote];
-        arr[pivote] = t;
-        j--;
-        while (i <= j) {
-            if (arr[i] <= arr[end]) {
-                i++;
+    private int divide(int left, int right, int[] array) {
+        int l = left;
+        int r = right;
+        int index = new Random().nextInt(r - l) + l;
+        int tmp = array[r];
+        array[r] = array[index];
+        array[index] = tmp;
+        r--;
+        while (l <= r) {
+            if (array[l] <= array[right]) {
+                l++;
                 continue;
             }
-            if (arr[j] >= arr[end]) {
-                j--;
+            if (array[r] >= array[right]) {
+                r--;
                 continue;
             }
-            t = arr[j];
-            arr[j] = arr[i];
-            arr[i] = t;
-            j--;
-            i++;
+            tmp = array[r];
+            array[r] = array[l];
+            array[l] = tmp;
+            r--;
+            l++;
         }
-        t = arr[j + 1];
-        arr[j + 1] = arr[end];
-        arr[end] = t;
-        return j + 1;
+        tmp = array[r + 1];
+        array[r + 1] = array[right];
+        array[right] = tmp;
+        return r + 1;
     }
 
-    private void sort(int[] a, int lo, int hi) {
-        if(hi <= lo) return;
-
-        // Находим средний элемент
-        int j = partition(lo, hi, a);
-
-        // Рекусивное вызов левой / правой подчасти
-        sort(a, lo, j - 1);
-        sort(a, j + 1, hi);
+    private void sort(int[] array, int left, int right) {
+        if(right <= left) return;
+        int middle = divide(left, right, array);
+        sort(array, left, middle - 1);
+        sort(array, middle + 1, right);
     }
 }
